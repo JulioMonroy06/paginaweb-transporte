@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Altamira | Logística Portuaria</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CONFIGURACIÓN DE COLORES Y BASES --- */
+        :root {
+            --azul-marino: #0a2540; 
+            --azul-profundo: #051626;
+            --naranja: #f59e0b;
+            --naranja-hover: #d97706;
+            --blanco: #ffffff;
+            --gris-fondo: #f8fafc;
+            --texto: #334155;
+            --sombra-suave: 0 10px 30px -10px rgba(0,0,0,0.2);
+            --sombra-fuerte: 0 20px 40px -10px rgba(0,0,0,0.4);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--gris-fondo);
+            color: var(--texto);
+            line-height: 1.7; /* Más espacio entre líneas = más elegancia */
+            overflow-x: hidden;
+        }
+
+        /* --- CLASES PARA ANIMACIÓN SCROLL (Efecto Lento) --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px); /* Empieza 50px más abajo */
+            transition: all 1s ease-out; /* Tarda 1 segundo en aparecer (lento y formal) */
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- NAVEGACIÓN --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(10, 37, 64, 0.98);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 3px solid var(--naranja);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--blanco);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .logo i { color: var(--naranja); margin-right: 10px; }
+
+        .nav-links { display: flex; gap: 40px; }
+        
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s ease; /* Transición suave */
+            position: relative;
+        }
+        
+        /* Efecto subrayado elegante en menú */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--naranja);
+            transition: width 0.4s ease;
+        }
+        .nav-links a:hover { color: var(--blanco); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Botón CONTACTO en Menú (Diferente) */
+        .btn-nav-contacto {
+            background: transparent;
+            border: 1px solid var(--naranja);
+            padding: 8px 25px;
+            border-radius: 50px;
+            color: var(--naranja) !important;
+        }
+        .btn-nav-contacto:hover {
+            background: var(--naranja);
+            color: var(--azul-marino) !important;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.6); /* Resplandor naranja */
+        }
+        .btn-nav-contacto::after { display: none; } /* Quitar subrayado en botón */
+
+        /* --- HERO (HOME) --- */
+        #home {
+            height: 100vh;
+            background: linear-gradient(rgba(5, 22, 38, 0.8), rgba(5, 22, 38, 0.7)), url(image.png);
+            background-position: center;
+            background-attachment: fixed; /* Efecto Parallax (Fondo quieto al bajar) */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 4.5rem;
+            color: var(--blanco);
+            margin-bottom: 25px;
+            line-height: 1.1;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            color: #cbd5e1;
+            font-size: 1.3rem;
+            max-width: 750px;
+            margin: 0 auto 50px auto;
+            font-weight: 300;
+        }
+
+        /* --- BOTÓN PRINCIPAL (INTERACTIVO Y LLAMATIVO) --- */
+        .btn-cta {
+            padding: 18px 50px;
+            background: var(--naranja);
+            color: var(--azul-profundo);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote suave */
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse 3s infinite; /* Latido */
+        }
+
+        .btn-cta:hover { 
+            background: var(--blanco);
+            transform: translateY(-5px) scale(1.05); /* Sube y crece */
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Animación de Latido suave */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(245, 158, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+
+        /* --- SECCIONES GENERALES --- */
+        section { padding: 100px 10%; }
+        
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            color: var(--azul-marino);
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: -1px;
+        }
+        
+        .subtitulo {
+            text-align: center;
+            margin-bottom: 70px;
+            color: #64748b;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- VALORES (Info empresa) --- */
+        .valores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+        .valor-card {
+            background: white;
+            padding: 40px;
+            border-top: 5px solid var(--azul-marino);
+            border-radius: 10px;
+            box-shadow: var(--sombra-suave);
+            transition: all 0.5s ease;
+        }
+        .valor-card:hover {
+            transform: translateY(-15px); /* Sube mucho más al flotar */
+            box-shadow: var(--sombra-fuerte);
+            border-top: 5px solid var(--naranja);
+        }
+        .valor-card h3 { 
+            margin-bottom: 20px; 
+            color: var(--azul-marino); 
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .valor-card i { color: var(--naranja); font-size: 1.8rem; }
+
+        /* --- SERVICIOS --- */
+        #servicios { background: white; }
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .servicio-item {
+            text-align: center;
+            padding: 50px 30px;
+            background: var(--gris-fondo);
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .servicio-item:hover {
+            background: var(--blanco);
+            transform: scale(1.05);
+            border-color: var(--naranja);
+            box-shadow: var(--sombra-fuerte);
+        }
+        .servicio-item i {
+            font-size: 3.5rem;
+            color: var(--azul-marino);
+            margin-bottom: 25px;
+            transition: 0.4s;
+        }
+        .servicio-item:hover i { color: var(--naranja); transform: rotateY(360deg); }
+
+        /* --- UBICACIÓN --- */
+        #ubicacion {
+            background: var(--azul-marino);
+            color: white;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Decoración de fondo */
+        #ubicacion::before {
+            content: '';
+            position: absolute;
+            top: -50px; right: -50px;
+            width: 300px; height: 300px;
+            background: var(--naranja);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+
+        #ubicacion h2 { color: white; text-align: left;}
+        .ubicacion-texto { flex: 1; z-index: 1; }
+        .ubicacion-mapa { 
+            flex: 1;
+            height: 400px;
+            background: #334155;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.5s ease;
+        }
+        .ubicacion-mapa:hover { transform: scale(1.02); }
+        .ubicacion-mapa img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- CONTACTO --- */
+        #contacto { background: var(--gris-fondo); }
+        .contacto-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: var(--sombra-suave);
+        }
+        .form-group { margin-bottom: 25px; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            transition: 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--azul-marino);
+            background: white;
+            outline: none;
+        }
+        .btn-enviar {
+            width: 100%;
+            padding: 20px;
+            background: var(--azul-marino);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-enviar:hover {
+            background: var(--naranja);
+            color: var(--azul-profundo);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #020617;
+            color: #64748b;
+            text-align: center;
+            padding: 50px;
+            font-size: 0.9rem;
+            border-top: 5px solid var(--naranja);
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .nav-links { display: none; } 
+            .hero-content h1 { font-size: 2.8rem; }
+            #ubicacion { flex-direction: column; }
+            section { padding: 60px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo"><i class="fa-solid fa-anchor"></i> Global Altamira</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#valores">Empresa</a>
+            <a href="#ubicacion">Puerto</a>
+            <a href="#contacto" class="btn-nav-contacto">Contacto</a>
+        </div>
+    </nav>
+
+    <header id="home">
+        <div class="hero-content reveal">
+            <h1>Conectando el Puerto<br>con el Mundo</h1>
+            <p>Logística industrial y transporte especializado desde el corazón de Altamira.</p>
+            <a href="#contacto" class="btn-cta">Solicitar Cotización</a>
+        </div>
+    </header>
+
+    <section id="valores">
+        <div class="reveal">
+            <h2>Nuestra Esencia</h2>
+            <p class="subtitulo">Excelencia operativa en cada maniobra.</p>
+        </div>
+        
+        <div class="valores-grid">
+            <div class="valor-card reveal">
+                <h3><i class="fa-solid fa-shield-halved"></i> Seguridad Total</h3>
+                <p>Protocolos estrictos y monitoreo satelital en todas nuestras unidades para garantizar la integridad de su carga.</p>
+            </div>
+            <div class="valor-card reveal">
+                <h3><i class="fa-solid fa-clock"></i> Justo a timpo</h3>
+                <p>Entendemos la industria. Entregamos puntualmente para no detener sus líneas de producción.</p>
+            </div>
+            <div class="valor-card reveal">
+                <h3><i class="fa-solid fa-award"></i> Certificación</h3>
+                <p>Personal altamente capacitado y unidades certificadas para ingreso a terminales portuarias.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios">
+        <div class="reveal">
+            <h2>Soluciones Logísticas</h2>
+            <p class="subtitulo">Infraestructura lista para proyectos de gran escala.</p>
+        </div>
+        
+        <div class="servicios-grid">
+            <div class="servicio-item reveal">
+                <i class="fa-solid fa-truck-front"></i>
+                <h3>Fletes Nacionales</h3>
+                <p>Plataformas y cajas secas desde Altamira a todo México.</p>
+            </div>
+            <div class="servicio-item reveal">
+                <i class="fa-solid fa-ship"></i>
+                <h3>Gestión Portuaria</h3>
+                <p>Trámites y desconsolidación de contenedores en puerto.</p>
+            </div>
+            <div class="servicio-item reveal">
+                <i class="fa-solid fa-trailer"></i>
+                <h3>Exceso de Dimensiones</h3>
+                <p>Transporte especializado para maquinaria y piezas sobredimensionadas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="ubicacion">
+        <div class="ubicacion-texto reveal">
+            <h2>Ubicación Estratégica</h2>
+            <p style="margin-bottom: 30px; opacity: 0.9; font-size: 1.1rem;">
+                Nuestras oficinas y patio de maniobras se encuentran dentro del <strong>Corredor Industrial de Altamira</strong>, a escasos minutos de las terminales ATP y IPM.
+            </p>
+            <ul style="list-style: none; font-size: 1.1rem;">
+                <li style="margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color:#f59e0b; margin-right: 10px;"></i> Blvd. de los Ríos Km 10, Puerto Industrial.</li>
+                <li><i class="fa-solid fa-phone" style="color:#f59e0b; margin-right: 10px;"></i> Atención 24/7</li>
+            </ul>
+        </div>
+        <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57564.66447875412!2d-97.89988264999999!3d22.4137257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d7f75bd0655003%3A0xe54421422791732!2sPuerto%20Industrial%20de%20Altamira!5e0!3m2!1ses!2smx!4v1700000000000!5m2!1ses!2smx" 
+        width="500px" 
+        height="100%" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+    </section>
+
+    <section id="contacto">
+        <div class="reveal">
+            <h2>Hablemos de Negocios</h2>
+            <p class="subtitulo">Déjenos sus datos y un ejecutivo le contactará hoy mismo.</p>
+        </div>
+
+        <div class="contacto-container reveal">
+            <form action="https://formsubmit.co/p08238093@gmail.com" method="POST">
+    
+                <input type="hidden" name="_captcha" value="false"> <input type="hidden" name="_subject" value="Nueva Cotización - Global Altamira"> <input type="hidden" name="_next" value="https://formsubmit.co/el/thanks"> <div class="form-group">
+                    <input type="text" name="empresa" placeholder="Nombre de la Empresa" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Correo Electrónico Corporativo" required>
+                </div>
+                
+                <div class="form-group">
+                    <textarea name="mensaje" rows="5" placeholder="¿Qué tipo de carga necesita mover?" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn-enviar">ENVIAR SOLICITUD</button>
+            
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Global Altamira S.A. de C.V. | Líderes en Logística Portuaria</p>
+    </footer>
+
+    <script>
+        // Este pequeño código detecta cuando bajas la pantalla
+        // y hace aparecer los elementos suavemente.
+        
+        window.addEventListener('scroll', reveal);
+
+        function reveal(){
+            var reveals = document.querySelectorAll('.reveal');
+
+            for(var i = 0; i < reveals.length; i++){
+                var windowheight = window.innerHeight;
+                var revealtop = reveals[i].getBoundingClientRect().top;
+                var revealpoint = 150;
+
+                if(revealtop < windowheight - revealpoint){
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        
+        // Activar una vez al inicio por si ya estamos abajo
+        reveal();
+    </script>
+
+</body>
+</html>
